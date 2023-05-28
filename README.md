@@ -28,7 +28,7 @@ import JSONRPC2
 
 let service = JSONRPC2Service(url: url, urlSession: urlSession)
 let request = JSONRPC2Request(method: method, params: params)
-let result = await rpcService.sendRequest(request)
+let result = try await service.sendRequest(request) as Result<JSONRPC2Response<ResultType, JSONRPC2Error>, HTTPError>
 ```
 
 ## License
