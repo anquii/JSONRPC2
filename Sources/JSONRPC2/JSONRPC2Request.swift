@@ -1,14 +1,13 @@
-import Foundation
-
 public struct JSONRPC2Request: Encodable {
     public let jsonrpc = "2.0"
     public let method: String
     public let params: Encodable?
-    public let id = UUID().uuidString
+    public let id: String
 
-    public init(method: String, params: Encodable? = nil) {
+    public init(method: String, params: Encodable? = nil, id: String) {
         self.method = method
         self.params = params
+        self.id = id
     }
 
     public func encode(to encoder: Encoder) throws {

@@ -1,4 +1,4 @@
 public struct JSONRPC2Error: Decodable {
-    public let code: JSONRPC2ErrorCode
+    public let code: Int
     public let message: String
 }

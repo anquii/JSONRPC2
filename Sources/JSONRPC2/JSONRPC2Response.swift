@@ -1,6 +1,6 @@
-public struct JSONRPC2Response<ResultType: Decodable, ErrorType: Decodable>: Decodable {
+public struct JSONRPC2Response<R: Decodable, E: Decodable>: Decodable {
     public let jsonrpc: String
-    public let result: ResultType?
-    public let error: ErrorType?
+    public let result: R?
+    public let error: E?
     public let id: String
 }

@@ -4,12 +4,11 @@
 [![Swift Package Manager compatible](https://img.shields.io/badge/SPM-compatible-orange)](#swift-package-manager)
 [![License](https://img.shields.io/badge/license-MIT-green.svg)](https://github.com/anquii/JSONRPC2/blob/main/LICENSE)
 
-A [JSON-RPC 2.0](https://www.jsonrpc.org/specification) client implementation in Swift.
+A transport agnostic client implementation of [JSON-RPC 2.0](https://www.jsonrpc.org/specification) in Swift.
 
 ## Platforms
-
-- macOS 12+
-- iOS 14+
+- macOS 10.15+
+- iOS 13+
 
 ## Installation
 
@@ -17,7 +16,7 @@ A [JSON-RPC 2.0](https://www.jsonrpc.org/specification) client implementation in
 
 Add the following line to your `Package.swift` file:
 ```swift
-.package(url: "https://github.com/anquii/JSONRPC2.git", from: "0.1.0")
+.package(url: "https://github.com/anquii/JSONRPC2.git", from: "1.0.0")
 ```
 ...or integrate with Xcode via `File -> Swift Packages -> Add Package Dependency...` using the URL of the repository.
 
@@ -26,9 +25,21 @@ Add the following line to your `Package.swift` file:
 ```swift
 import JSONRPC2
 
-let service = JSONRPC2Service(url: url, urlSession: urlSession)
+let encoder = JSONEncoder()
+let decoder = JSONDecoder()
+
 let request = JSONRPC2Request(method: method, params: params)
-let result = try await service.sendRequest(request) as Result<JSONRPC2Response<ResultType, JSONRPC2Error>, HTTPError>
+let encodedRequest = try encoder.encode(request)
+let decodedRequest = try decoder.decode(JSONRPC2Response<ResultType, JSONRPC2Error>.self, from: encodedRequest)
+
+let notification = JSONRPC2Notification(method: method, params: params)
+let encodedNotification = try encoder.encode(notification)
+let decodedNotification = try decoder.decode(JSONRPC2Response<ResultType, JSONRPC2Error>.self, from: encodedNotification)
+
+let batch = JSONRPC2Batch(items: [request, notification])
+let encodedBatch = try encoder.encode(batch)
+let decodedBatch = try decoder.decode(JSONRPC2Response<ResultType, JSONRPC2Error>.self, from: encodedBatch)
+// or if your batch includes multiple requests: let decodedBatch = try decoder.decode([JSONRPC2Response<ResultType, JSONRPC2Error>].self, from: encodedBatch)
 ```
 
 ## License

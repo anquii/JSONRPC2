@@ -8,6 +8,7 @@ let package = Package(
         .library(name: "JSONRPC2", targets: ["JSONRPC2"])
     ],
     targets: [
-        .target(name: "JSONRPC2")
+        .target(name: "JSONRPC2"),
+        .testTarget(name: "JSONRPC2Tests", dependencies: ["JSONRPC2"])
     ]
 )
