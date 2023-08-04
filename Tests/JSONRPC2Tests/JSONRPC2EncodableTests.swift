@@ -50,7 +50,7 @@ final class JSONRPC2EncodableTests: XCTestCase {
     }
 
     func testGivenNotification_With0Params_WhenEncode_ThenEqualVector() throws {
-        let notification = JSONRPC2Notification(method: "testMethod")
+        let notification = JSONRPC2Request(method: "testMethod")
         let encodedNotification = try encoder.encode(notification)
         let expression = String(data: encodedNotification, encoding: .utf8)
         let vectorExpression = "{\"jsonrpc\":\"2.0\",\"method\":\"testMethod\"}"
@@ -58,7 +58,7 @@ final class JSONRPC2EncodableTests: XCTestCase {
     }
 
     func testGivenNotification_With1PositionalParam_WhenEncode_ThenEqualVector() throws {
-        let notification = JSONRPC2Notification(method: "testMethod", params: [0])
+        let notification = JSONRPC2Request(method: "testMethod", params: [0])
         let encodedNotification = try encoder.encode(notification)
         let expression = String(data: encodedNotification, encoding: .utf8)
         let vectorExpression = "{\"jsonrpc\":\"2.0\",\"method\":\"testMethod\",\"params\":[0]}"
@@ -66,7 +66,7 @@ final class JSONRPC2EncodableTests: XCTestCase {
     }
 
     func testGivenNotification_With2PositionalParams_WhenEncode_ThenEqualVector() throws {
-        let notification = JSONRPC2Notification(method: "testMethod", params: [0, 1])
+        let notification = JSONRPC2Request(method: "testMethod", params: [0, 1])
         let encodedNotification = try encoder.encode(notification)
         let expression = String(data: encodedNotification, encoding: .utf8)
         let vectorExpression = "{\"jsonrpc\":\"2.0\",\"method\":\"testMethod\",\"params\":[0,1]}"
@@ -74,7 +74,7 @@ final class JSONRPC2EncodableTests: XCTestCase {
     }
 
     func testGivenNotification_With1NamedParam_WhenEncode_ThenEqualVector() throws {
-        let notification = JSONRPC2Notification(method: "testMethod", params: ["testParam0": "0"])
+        let notification = JSONRPC2Request(method: "testMethod", params: ["testParam0": "0"])
         let encodedNotification = try encoder.encode(notification)
         let expression = String(data: encodedNotification, encoding: .utf8)
         let vectorExpression = "{\"jsonrpc\":\"2.0\",\"method\":\"testMethod\",\"params\":{\"testParam0\":\"0\"}}"
@@ -82,15 +82,15 @@ final class JSONRPC2EncodableTests: XCTestCase {
     }
 
     func testGivenNotification_With2NamedParams_WhenEncode_ThenEqualVector() throws {
-        let notification = JSONRPC2Notification(method: "testMethod", params: ["testParam0": "0", "testParam1": "1"])
+        let notification = JSONRPC2Request(method: "testMethod", params: ["testParam0": "0", "testParam1": "1"])
         let encodedNotification = try encoder.encode(notification)
         let expression = String(data: encodedNotification, encoding: .utf8)
         let vectorExpression = "{\"jsonrpc\":\"2.0\",\"method\":\"testMethod\",\"params\":{\"testParam0\":\"0\",\"testParam1\":\"1\"}}"
         XCTAssertEqual(expression, vectorExpression)
     }
 
-    func testGivenBatch_With2Items_WhenEncode_ThenEqualVector() throws {
-        let batch = JSONRPC2Batch(items: [JSONRPC2Request(method: "testMethod", id: "testID"), JSONRPC2Notification(method: "testMethod")])
+    func testGivenBatch_With2Requests_WhenEncode_ThenEqualVector() throws {
+        let batch = JSONRPC2Batch(requests: [JSONRPC2Request(method: "testMethod", id: "testID"), JSONRPC2Request(method: "testMethod")])
         let encodedBatch = try encoder.encode(batch)
         let expression = String(data: encodedBatch, encoding: .utf8)
         let vectorExpression =

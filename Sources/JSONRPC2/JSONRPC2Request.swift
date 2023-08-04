@@ -2,12 +2,19 @@ public struct JSONRPC2Request: Encodable {
     public let jsonrpc = "2.0"
     public let method: String
     public let params: Encodable?
-    public let id: String
+    public let id: String?
 
     public init(method: String, params: Encodable? = nil, id: String) {
         self.method = method
         self.params = params
         self.id = id
+    }
+
+    /// Initializer for a notification defined as a request without the `id` field.
+    public init(method: String, params: Encodable? = nil) {
+        self.method = method
+        self.params = params
+        id = nil
     }
 
     public func encode(to encoder: Encoder) throws {
@@ -17,7 +24,9 @@ public struct JSONRPC2Request: Encodable {
         if let params {
             try container.encode(params, forKey: .params)
         }
-        try container.encode(id, forKey: .id)
+        if let id {
+            try container.encode(id, forKey: .id)
+        }
     }
 
     private enum CodingKeys: String, CodingKey {

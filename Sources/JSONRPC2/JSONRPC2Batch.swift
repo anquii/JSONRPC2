@@ -1,14 +1,14 @@
 public struct JSONRPC2Batch: Encodable {
-    public let items: [Encodable]
+    public let requests: [JSONRPC2Request]
 
-    public init(items: [Encodable]) {
-        self.items = items
+    public init(requests: [JSONRPC2Request]) {
+        self.requests = requests
     }
 
     public func encode(to encoder: Encoder) throws {
         var container = encoder.unkeyedContainer()
-        for item in items {
-            try container.encode(item)
+        for request in requests {
+            try container.encode(request)
         }
     }
 }
